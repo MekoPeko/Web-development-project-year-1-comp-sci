@@ -1,0 +1,112 @@
+/* Student ID - 2400965 , Student name - Harry Masters */
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Body Styling */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to right, #1E3A8A, #3B82F6); /* Nice Blue Gradient */
+}
+
+/* Modal Box */
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* Enlarged Form */
+.modal-content {
+    background-color: white;
+    padding: 40px; /* More padding */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 450px; /* Increased width */
+    text-align: center;
+}
+
+/* Form Title */
+h1 {
+    color: #1E3A8A;
+    margin-bottom: 15px;
+    font-size: 28px; /* Bigger title */
+}
+
+/* Form Description */
+p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Larger Input Fields */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 15px; /* Bigger inputs */
+    margin: 10px 0;
+    font-size: 16px; /* Larger text */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Buttons Styling */
+button {
+    width: 100%;
+    padding: 14px; /* Bigger buttons */
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px; /* Larger button text */
+    transition: 0.3s;
+}
+
+/* Register Button */
+.registerbtn {
+    background-color: #1E3A8A;
+    color: white;
+}
+
+.registerbtn:hover {
+    background-color: #3B82F6;
+}
+
+/* Sign In Button */
+.signinbtn {
+    background-color: #10B981;
+    color: white;
+}
+
+.signinbtn:hover {
+    background-color: #16A34A;
+}
+
+/* Cancel Button */
+.cancelbtn {
+    background-color: #DC2626;
+    color: white;
+}
+
+.cancelbtn:hover {
+    background-color: #B91C1C;
+}
+
+/* Button Layout */
+.clearfix {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}

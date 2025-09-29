@@ -1,0 +1,74 @@
+<!-- Student ID - 2400965 , Student name - Harry Masters -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Management</title>
+    <link rel="stylesheet" href="/static/admin.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Booking Management</h1>
+        <div class="nav-buttons">
+            <a href="/admin" class="btn btn-back">Back to Admin Dashboard</a>
+        </div>
+
+        {% if bookings %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Customer Name</th>
+                    <th>Email</th>
+                    <th>Flight From</th>
+                    <th>Flight To</th>
+                    <th>Depart Time</th>
+                    <th>Arrive Time</th>
+                    <th>Booking Date</th>
+                    <th>Seat Type</th>
+                    <th>Seats</th>
+                    <th>Total Cost</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.booking_id }}</td>
+                    <td>{{ booking.user_name }}</td>
+                    <td>{{ booking.user_email }}</td>
+                    <td>{{ booking.flight_depart }}</td>
+                    <td>{{ booking.flight_arrive }}</td>
+                    <td>{{ booking.depart_time }}</td>
+                    <td>{{ booking.arrive_time }}</td>
+                    <td>{{ booking.booking_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>{{ booking.seat_type }}</td>
+                    <td>{{ booking.seats_booked }}</td>
+                    <td>${{ booking.Booking_cost }}</td>
+                    <td class="{% if booking.booking_status == 'pending' %}status-pending{% elif booking.booking_status == 'confirmed' %}status-confirmed{% endif %}">
+                        {{ booking.booking_status }}
+                    </td>
+                    <td>
+                        {% if booking.booking_status == 'pending' %}
+                        <form action="/admin/approve_booking" method="post" style="display: inline;">
+                            <input type="hidden" name="booking_id" value="{{ booking.booking_id }}">
+                            <button type="submit" class="btn btn-approve">Approve</button>
+                        </form>
+                        {% endif %}
+                        <form action="/admin/delete_booking" method="post" style="display: inline;">
+                            <input type="hidden" name="booking_id" value="{{ booking.booking_id }}">
+                            <button type="submit" class="btn btn-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No bookings found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

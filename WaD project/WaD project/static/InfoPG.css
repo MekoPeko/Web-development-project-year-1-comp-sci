@@ -1,0 +1,419 @@
+/* Student ID - 2400965 , Student name - Harry Masters */
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body & Layout */
+body {
+    display: flex;
+    flex-direction: column; /* Changed to column to accommodate navbar */
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+    background-color: #F3F4F6; /* Light Gray Background */
+    color: #333; /* Default Dark Gray Text */
+}
+
+/* Navigation Bar Styling */
+.navbar {
+    width: 100%;
+    background-color: #1E3A8A; /* Navy Blue */
+    padding: 10px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.navbar h2 {
+    color: white;
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.navbar a {
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.navbar a:hover {
+    background-color: #3B82F6; /* Lighter Blue Hover */
+    transform: translateY(-2px);
+}
+
+/* Mobile menu button */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #1E3A8A; /* Navy Blue */
+    padding-top: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    padding: 15px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: #3B82F6; /* Lighter Blue Hover */
+}
+
+/* Main Content Wrapper */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 70px; /* Adjusted for navbar */
+    width: 100%;
+    min-height: calc(100vh - 70px);
+    padding: 20px;
+}
+
+/* Content Area */
+.content {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Title Styling */
+h1 {
+    color: #1E3A8A;
+    font-size: 2rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+h1 i {
+    color: #3B82F6;
+}
+
+.subtitle {
+    color: #6B7280;
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+}
+
+h2 {
+    color: #1E3A8A;
+    font-size: 1.5rem;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+h2 i {
+    color: #3B82F6;
+}
+
+/* Flash messages */
+.flash-messages {
+    margin: 20px 0;
+}
+
+.flash-message {
+    background-color: #E0F2FE;
+    color: #0369A1;
+    padding: 12px 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Account sections */
+.account-info, .password-change-section, .account-activity {
+    background-color: #F9FAFB;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.account-info:hover, .password-change-section:hover, .account-activity:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    overflow-x: auto;
+    display: block;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 1rem;
+}
+
+th {
+    background-color: #1E3A8A; /* Navy Blue Header */
+    color: white;
+    position: sticky;
+    top: 0;
+}
+
+td {
+    background-color: #f9fafb; /* Light Gray for Cells */
+}
+
+/* Password Field Styling */
+.password-field {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+input[type="password"], input[type="text"] {
+    flex: 1;
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px 0 0 5px;
+    background-color: #f9fafb;
+}
+
+.toggle-password {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-left: none;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+    transition: background-color 0.3s;
+}
+
+.toggle-password:hover {
+    background-color: #e0e0e0;
+}
+
+/* Form Styling */
+.password-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 500px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #4B5563;
+}
+
+.password-input-group {
+    position: relative;
+    display: flex;
+}
+
+.password-strength {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Button Styling */
+button {
+    background-color: #3B82F6; /* Lighter Blue */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+button:hover {
+    background-color: #2563EB; /* Darker Blue on Hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Footer (Always at Bottom) */
+.footer {
+    text-align: center;
+    padding: 15px;
+    background: #1E293B; /* Darker Blue */
+    color: white;
+    width: 100%;
+    font-size: 14px;
+}
+
+/* Change Password Form */
+form {
+    margin-top: 20px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    color: #333;
+}
+
+form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.change-password-btn {
+    background-color: #1E3A8A;
+    color: white;
+    align-self: flex-start;
+    margin-top: 10px;
+}
+
+.change-password-btn:hover {
+    background-color: #1E40AF;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .navbar-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .navbar-links.active {
+        display: flex;
+    }
+    
+    .navbar a {
+        width: 100%;
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .navbar a:last-child {
+        border-bottom: none;
+    }
+    
+    .menu-toggle {
+        display: block;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+    }
+    
+    .main-container {
+        padding: 10px;
+    }
+    
+    .content {
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    h2 {
+        font-size: 1.3rem;
+    }
+    
+    table {
+        font-size: 0.9rem;
+    }
+    
+    th, td {
+        padding: 10px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .content {
+        padding: 25px;
+    }
+    
+    .password-form {
+        max-width: 450px;
+    }
+}
+
+@media (min-width: 1025px) {
+    .main-container {
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .content {
+        padding: 40px;
+    }
+}
+

@@ -1,0 +1,83 @@
+<!-- Student ID - 2400965 , Student name - Harry Masters -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Details - Horizen Travels</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='checkout.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h2>Horizen Travels</h2>
+        <button class="menu-toggle" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="navbar-links" id="navbar-links">
+            <a href="/Main"><i class="fas fa-home"></i> Home</a>
+            <a href="/Book"><i class="fas fa-plane"></i> Flight Booking</a>
+            <a href="/sbooking"><i class="fas fa-list"></i> View Bookings</a>
+            <a href="/info"><i class="fas fa-info-circle"></i> More Info</a>
+            <a href="/contacts"><i class="fas fa-address-book"></i> Contacts</a>
+            {% if is_admin %}
+            <a href="/admin"><i class="fas fa-user-shield"></i> Admin Page</a>
+            {% endif %}
+            <a href="/logout"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-container">
+        <div class="content">
+            <h1><i class="fas fa-credit-card"></i> Payment Details</h1>
+            <p>Please enter your payment details to complete the booking.</p>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="flash-messages">
+                  {% for message in messages %}
+                    <p class="flash-message">{{ message }}</p>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+
+            <!-- Payment Form -->
+            <div class="payment-form">
+                <form action="/process_payment" method="POST">
+                    <input type="hidden" name="booking_id" value="{{ booking.booking_id }}"> <!-- Pass booking ID -->
+                    <label for="card-name">Cardholder Name</label>
+                    <input type="text" id="card-name" name="card_name" placeholder="Enter cardholder name" required>
+
+                    <label for="card-number">Card Number</label>
+                    <input type="text" id="card-number" name="card_number" placeholder="Enter card number" required>
+
+                    <label for="expiry-date">Expiry Date</label>
+                    <input type="text" id="expiry-date" name="expiry_date" placeholder="MMYY" required maxlength="4" pattern="\d{4}" inputmode="numeric" title="Enter 4 digits (MMYY)">
+
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" placeholder="Enter CVV" required maxlength="3" pattern="\d{3}" inputmode="numeric" title="Enter 3 digits">
+
+                    <button type="submit" class="pay-btn">Submit Payment</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            © 2025 Horizen Travels | All Rights Reserved
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('navbar-links').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

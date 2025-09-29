@@ -1,0 +1,275 @@
+<!-- Student ID - 2400965 , Student name - Harry Masters -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Management - Horizen Travels</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='sbooking.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h2>Horizen Travels</h2>
+        <button class="menu-toggle" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="navbar-links" id="navbar-links">
+            <a href="/Main"><i class="fas fa-home"></i> Home</a>
+            <a href="/admin"><i class="fas fa-user-shield"></i> Admin Dashboard</a>
+            <a href="/admin/accounts"><i class="fas fa-users"></i> Accounts</a>
+            <a href="/admin/bookings"><i class="fas fa-ticket-alt"></i> Bookings</a>
+            <a href="/admin/flights"><i class="fas fa-plane"></i> Flights</a>
+            <a href="/admin/sales"><i class="fas fa-chart-line"></i> Sales</a>
+            <a href="/logout"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-container">
+        <div class="content">
+            <h1><i class="fas fa-users"></i> Account Management</h1>
+            <p>Welcome to the account management section, {{ name }}.</p>
+            
+            <!-- Back button -->
+            <a href="/admin" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</a>
+            
+            <!-- Stats Summary -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Total Users</h3>
+                    <p>{{ users|length }}</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-user-shield"></i>
+                    <h3>Admin Users</h3>
+                    <p>{{ users|selectattr('account_type', 'equalto', 'Admin')|list|length }}</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-user"></i>
+                    <h3>Customer Users</h3>
+                    <p>{{ users|selectattr('account_type', 'equalto', 'Custmer')|list|length }}</p>
+                </div>
+            </div>
+            
+            <!-- User Management Section -->
+            <div class="table-container">
+                <h2><i class="fas fa-users"></i> User Management</h2>
+                
+                <!-- Search and Filter -->
+                <div class="filter-container">
+                    <input type="text" id="userSearch" placeholder="Search users..." onkeyup="filterUsers()">
+                    <select id="accountTypeFilter" onchange="filterUsers()">
+                        <option value="">All Account Types</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Custmer">Customer</option>
+                    </select>
+                </div>
+                
+                <table id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Account Type</th>
+                            <th>Bookings</th>
+                            <th>Total Spent</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.ID }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                <div class="password-field">
+                                    <input type="password" value="{{ user.password }}" class="password-input" readonly>
+                                    <button type="button" class="toggle-password" onclick="togglePassword(this)">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge {% if user.account_type == 'Admin' %}admin-badge{% else %}customer-badge{% endif %}">
+                                    {{ user.account_type }}
+                                </span>
+                            </td>
+                            <td>{{ user.booking_count }} bookings</td>
+                            <td>${{ "%.2f"|format(user.total_spent) }}</td>
+                            <td>
+                                <div class="button-group">
+                                    <a href="/admin/edit_user/{{ user.ID }}" class="edit-btn">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <a href="#" class="view-btn" onclick="viewUserDetails({{ user.ID }})">
+                                        <i class="fas fa-eye"></i> Details
+                                    </a>
+                                    {% if user.account_type != 'Admin' or user.ID != current_user_id %}
+                                    <a href="#" class="delete-btn" onclick="deleteUser({{ user.ID }}, '{{ user.name }}')">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- User Details Modal (Hidden by Default) -->
+            <div id="userDetailsModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <h2><i class="fas fa-user-circle"></i> User Details</h2>
+                    <div id="userDetailsContent"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            © 2025 Horizen Travels | All Rights Reserved
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('navbar-links').classList.toggle('active');
+        });
+        
+        // Toggle password visibility
+        function togglePassword(button) {
+            const passwordInput = button.previousElementSibling;
+            const icon = button.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+        
+        // Filter users based on search input and account type
+        function filterUsers() {
+            const searchText = document.getElementById('userSearch').value.toLowerCase();
+            const accountType = document.getElementById('accountTypeFilter').value;
+            const rows = document.getElementById('usersTable').getElementsByTagName('tbody')[0].rows;
+            
+            for (let i = 0; i < rows.length; i++) {
+                const name = rows[i].cells[1].textContent.toLowerCase();
+                const email = rows[i].cells[2].textContent.toLowerCase();
+                const userAccountType = rows[i].cells[4].textContent.trim();
+                
+                const nameMatch = name.includes(searchText);
+                const emailMatch = email.includes(searchText);
+                const accountTypeMatch = accountType === '' || userAccountType === accountType;
+                
+                if ((nameMatch || emailMatch) && accountTypeMatch) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+        
+        // Modal functionality
+        function viewUserDetails(userId) {
+            // In a real implementation, you would fetch user details via AJAX
+            // For now, we'll use the data we already have
+            const modal = document.getElementById('userDetailsModal');
+            const userDetailsContent = document.getElementById('userDetailsContent');
+            
+            // Find the user row
+            const userRow = document.querySelector(`tr td:first-child:contains('${userId}')`).parentNode;
+            if (!userRow) return;
+            
+            const name = userRow.cells[1].textContent;
+            const email = userRow.cells[2].textContent;
+            const accountType = userRow.cells[4].textContent.trim();
+            const bookingCount = userRow.cells[5].textContent;
+            const totalSpent = userRow.cells[6].textContent;
+            
+            // Create user details HTML
+            userDetailsContent.innerHTML = `
+                <div class="user-details">
+                    <div class="detail-row">
+                        <span class="detail-label">User ID:</span>
+                        <span class="detail-value">${userId}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Name:</span>
+                        <span class="detail-value">${name}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Email:</span>
+                        <span class="detail-value">${email}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Account Type:</span>
+                        <span class="detail-value">${accountType}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Bookings:</span>
+                        <span class="detail-value">${bookingCount}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Total Spent:</span>
+                        <span class="detail-value">${totalSpent}</span>
+                    </div>
+                    <div class="detail-actions">
+                        <button class="edit-btn" onclick="editUser(${userId})">
+                            <i class="fas fa-edit"></i> Edit User
+                        </button>
+                        <button class="view-btn" onclick="viewUserBookings(${userId})">
+                            <i class="fas fa-list"></i> View Bookings
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Show modal
+            modal.style.display = 'block';
+        }
+        
+        function closeModal() {
+            document.getElementById('userDetailsModal').style.display = 'none';
+        }
+        
+        // Placeholder functions for future implementation
+        function deleteUser(userId, userName) {
+            if (confirm(`Are you sure you want to delete user "${userName}"?`)) {
+                alert(`Delete user ${userId} - This feature will be implemented in a future update`);
+            }
+        }
+        
+        function viewUserBookings(userId) {
+            alert(`View bookings for user ${userId} - Redirecting to filtered bookings view`);
+        }
+        
+        // Helper method to find elements by content
+        Element.prototype.contains = function(text) {
+            return this.textContent.includes(text);
+        };
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('userDetailsModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>

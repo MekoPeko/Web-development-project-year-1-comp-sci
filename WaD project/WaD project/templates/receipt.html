@@ -1,0 +1,200 @@
+<!-- Student ID - 2400965 , Student name - Harry Masters -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Receipt - Horizen Travels</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='checkout.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h2>Horizen Travels</h2>
+        <button class="menu-toggle" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="navbar-links" id="navbar-links">
+            <a href="/Main"><i class="fas fa-home"></i> Home</a>
+            <a href="/logout"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+            <a href="/info"><i class="fas fa-info-circle"></i> More Info</a>
+            <a href="/contacts"><i class="fas fa-address-book"></i> Contacts</a>
+            <a href="/Book"><i class="fas fa-plane"></i> Flight Booking</a>
+            <a href="/sbooking"><i class="fas fa-list"></i> View Bookings</a>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-container">
+        <div class="content">
+            <div class="receipt-header">
+                <h1><i class="fas fa-receipt"></i> Payment Receipt</h1>
+                <p class="receipt-date">Transaction Date: {{ payment.payment_date.strftime('%B %d, %Y at %I:%M %p') }}</p>
+                <p>Receipt #{{ payment.payment_id }}</p>
+            </div>
+
+            <!-- Customer Information -->
+            <div class="receipt-section">
+                <h2><i class="fas fa-user"></i> Customer Information</h2>
+                <div class="receipt-card">
+                    <div class="receipt-item">
+                        <span class="receipt-label">Name:</span>
+                        <span class="receipt-value">{{ payment.booking_name }}</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span class="receipt-label">Email:</span>
+                        <span class="receipt-value">{{ payment.booking_email }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flight Information -->
+            <div class="receipt-section">
+                <h2><i class="fas fa-plane"></i> Flight Information</h2>
+                <div class="receipt-card">
+                    <div class="receipt-item">
+                        <span class="receipt-label">From:</span>
+                        <span class="receipt-value">{{ payment.depart }}</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span class="receipt-label">Departure Time:</span>
+                        <span class="receipt-value">{{ payment.depart_time }}</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span class="receipt-label">To:</span>
+                        <span class="receipt-value">{{ payment.arrive }}</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span class="receipt-label">Arrival Time:</span>
+                        <span class="receipt-value">{{ payment.arrive_time }}</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span class="receipt-label">Seat Type:</span>
+                        <span class="receipt-value">{{ payment.seat_type }}</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span class="receipt-label">Number of Seats:</span>
+                        <span class="receipt-value">{{ payment.seats_booked }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Information -->
+            <div class="receipt-section">
+                <h2><i class="fas fa-credit-card"></i> Payment Information</h2>
+                <div class="receipt-card">
+                    <div class="receipt-item">
+                        <span class="receipt-label">Card Holder:</span>
+                        <span class="receipt-value">{{ payment.payments_cardholder_name }}</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span class="receipt-label">Card Number:</span>
+                        <span class="receipt-value">XXXX-XXXX-XXXX-{{ payment.payments_cardNum }}</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span class="receipt-label">Total Amount:</span>
+                        <span class="receipt-value">${{ "%.2f"|format(payment.total_price) }}</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span class="receipt-label">Status:</span>
+                        <span class="receipt-value" style="color: #10B981; font-weight: bold;">PAID</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="receipt-actions">
+                <button onclick="window.print()" class="print-btn">
+                    <i class="fas fa-print"></i> Print Receipt
+                </button>
+                <button onclick="generatePDF()" class="print-btn" style="background-color: #10B981;">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <a href="/sbooking" class="return-btn">
+                    <i class="fas fa-arrow-left"></i> Return to Bookings
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            © 2025 Horizen Travels | All Rights Reserved
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('navbar-links').classList.toggle('active');
+        });
+
+        // Function to generate and download PDF receipt
+        function generatePDF() {
+            // Initialize jsPDF
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Add receipt heading
+            doc.setFontSize(22);
+            doc.setTextColor(30, 58, 138); // Navy blue
+            doc.text("Horizen Travels", 105, 20, { align: "center" });
+            
+            doc.setFontSize(18);
+            doc.text("Payment Receipt", 105, 30, { align: "center" });
+            
+            // Add receipt details
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0); // Black
+            
+            doc.text(`Receipt #{{ payment.payment_id }}`, 20, 50);
+            doc.text(`Transaction Date: {{ payment.payment_date.strftime('%B %d, %Y at %I:%M %p') }}`, 20, 60);
+            
+            // Customer info
+            doc.setFontSize(14);
+            doc.setTextColor(30, 58, 138);
+            doc.text("Customer Information", 20, 80);
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Name: {{ payment.booking_name }}`, 20, 90);
+            doc.text(`Email: {{ payment.booking_email }}`, 20, 100);
+            
+            // Flight details
+            doc.setFontSize(14);
+            doc.setTextColor(30, 58, 138);
+            doc.text("Flight Details", 20, 120);
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`From: {{ payment.depart }}`, 20, 130);
+            doc.text(`To: {{ payment.arrive }}`, 20, 140);
+            doc.text(`Departure Time: {{ payment.depart_time }}`, 20, 150);
+            doc.text(`Arrival Time: {{ payment.arrive_time }}`, 20, 160);
+            doc.text(`Travel Date: {{ payment.booking_date.strftime('%Y-%m-%d') }}`, 20, 170);
+            doc.text(`Seat Type: {{ payment.seat_type }}`, 20, 180);
+            doc.text(`Seats Booked: {{ payment.seats_booked }}`, 20, 190);
+            
+            // Payment details
+            doc.setFontSize(14);
+            doc.setTextColor(30, 58, 138);
+            doc.text("Payment Details", 20, 210);
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Payment Method: Credit Card (ending in {{ payment.payments_cardNum }})`, 20, 220);
+            doc.text(`Total Amount: ${{ "%.2f"|format(payment.total_price) }}`, 20, 230);
+            
+            // Footer
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.text("© 2025 Horizen Travels | All Rights Reserved", 105, 270, { align: "center" });
+            
+            // Save the PDF
+            doc.save(`Receipt-{{ payment.payment_id }}.pdf`);
+        }
+    </script>
+</body>
+</html>

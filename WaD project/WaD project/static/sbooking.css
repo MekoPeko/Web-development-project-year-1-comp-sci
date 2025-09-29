@@ -1,0 +1,525 @@
+/* Student ID - 2400965 , Student name - Harry Masters */
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body & Layout */
+body {
+    display: flex;
+    flex-direction: column; /* Changed to column to accommodate navbar */
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+    background-color: #F3F4F6;
+    color: #333;
+}
+
+/* Navigation Bar Styling */
+.navbar {
+    width: 100%;
+    background-color: #1E3A8A; /* Navy Blue */
+    padding: 10px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.navbar h2 {
+    color: white;
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.navbar a {
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.navbar a:hover {
+    background-color: #3B82F6; /* Lighter Blue Hover */
+    transform: translateY(-2px);
+}
+
+/* Mobile menu button */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Main Content Wrapper */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 70px; /* Adjusted for navbar */
+    width: 100%;
+    min-height: calc(100vh - 70px);
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Content Area */
+.content {
+    flex: 1;
+    padding: 25px;
+    background-color: white;
+    border-radius: 10px;
+    margin: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Heading styles */
+h1 {
+    color: #1E3A8A;
+    margin-bottom: 25px;
+    font-size: 2.2rem;
+    position: relative;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 3px;
+    background-color: #3B82F6;
+}
+
+h2 {
+    color: #1E3A8A;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+/* Table Styling */
+.table-container {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow-x: auto;
+    overflow: hidden;
+}
+
+.table-container h2 {
+    background-color: #f3f4f6;
+    margin: 0;
+    padding: 18px 20px;
+    color: #1E3A8A;
+    font-size: 1.3rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 15px;
+}
+
+.table-container table {
+    margin-top: 0;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.table-container th {
+    background-color: #1E3A8A;
+    padding: 15px;
+    font-weight: 600;
+    color: white;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+table th {
+    background-color: #1E3A8A;
+    color: white;
+    position: sticky;
+    top: 0;
+}
+
+table tbody tr {
+    transition: background-color 0.3s;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tbody tr:hover {
+    background-color: #f0f9ff;
+}
+
+.table-container td {
+    padding: 15px;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: middle;
+    transition: background-color 0.2s;
+}
+
+.table-container tr:last-child td {
+    border-bottom: none;
+}
+
+.table-container tr:hover td {
+    background-color: #f0f9ff;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 15px;
+    background: #1E293B;
+    color: white;
+    width: 100%;
+    font-size: 0.9rem;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+/* Styled Button */
+.sign-in-btn {
+    background-color: #3B82F6;
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.sign-in-btn:hover {
+    background-color: #2563EB;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.sign-in-btn:active {
+    background-color: #1E40AF;
+    transform: translateY(0);
+}
+
+.delete-btn {
+    background-color: #EF4444;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 2px 0;
+}
+
+.delete-btn:hover {
+    background-color: #DC2626;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(239, 68, 68, 0.25);
+}
+
+.delete-btn:active {
+    transform: translateY(0);
+}
+
+/* Checkout Button */
+.checkout-btn {
+    background-color: #10B981; /* Green */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 2px 0;
+}
+
+.checkout-btn:hover {
+    background-color: #059669; /* Darker Green */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.25);
+}
+
+.checkout-btn:active {
+    transform: translateY(0);
+}
+
+/* Receipt Button */
+.view-receipt-btn {
+    background-color: #6366F1; /* Indigo */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 2px 0;
+}
+
+.view-receipt-btn:hover {
+    background-color: #4F46E5; /* Darker Indigo */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(99, 102, 241, 0.25);
+}
+
+.view-receipt-btn:active {
+    transform: translateY(0);
+}
+
+/* Refund Button */
+.refund-btn {
+    background-color: #F59E0B; /* Amber/Orange */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 2px 0;
+}
+
+.refund-btn:hover {
+    background-color: #D97706; /* Darker Amber */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(245, 158, 11, 0.25);
+}
+
+.refund-btn:active {
+    transform: translateY(0);
+}
+
+/* Button Group Container */
+.button-group {
+    display: flex;
+    gap: 8px;
+}
+
+/* Status Badge */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+    min-width: 110px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.status-pending {
+    background-color: #FEF3C7;
+    color: #92400E;
+    border: 1px solid #F59E0B;
+}
+
+.status-confirmed {
+    background-color: #D1FAE5;
+    color: #065F46;
+    border: 1px solid #10B981;
+}
+
+.status-cancelled {
+    background-color: #FEE2E2;
+    color: #991B1B;
+    border: 1px solid #EF4444;
+}
+
+.status-refund-pending {
+    background-color: #E0E7FF;
+    color: #3730A3;
+    border: 1px solid #6366F1;
+}
+
+/* Discount Info Card Enhancement */
+.discount-info-card {
+    margin: 90px 20px 20px 20px; 
+    background: linear-gradient(to right, #e0f7fa, #e0f2fe);
+    border-radius: 10px; 
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border-left: 5px solid #06b6d4;
+}
+
+.discount-info-card strong {
+    color: #0369a1;
+}
+
+.discount-info-card .discount-scale {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.discount-info-card .discount-item {
+    padding: 8px 12px;
+    border-radius: 6px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Empty state styling */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #f9fafb;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    color: #9ca3af;
+    margin-bottom: 15px;
+}
+
+.empty-state p {
+    color: #4b5563;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.empty-state a {
+    display: inline-block;
+    background-color: #3B82F6;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.empty-state a:hover {
+    background-color: #2563EB;
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .navbar-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .navbar-links.active {
+        display: flex;
+    }
+    
+    .navbar a {
+        width: 100%;
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .navbar a:last-child {
+        border-bottom: none;
+    }
+    
+    .menu-toggle {
+        display: block;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+    }
+    
+    .content {
+        margin: 10px;
+        padding: 15px;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    h2 {
+        font-size: 1.3rem;
+    }
+    
+    table {
+        display: block;
+        width: 100%;
+    }
+    
+    table th, table td {
+        min-width: 120px;
+    }
+    
+    .delete-btn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .delete-btn, .checkout-btn {
+        width: 100%;
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .content {
+        padding: 25px;
+    }
+    
+    .table-container {
+        padding: 15px;
+    }
+}

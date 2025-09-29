@@ -1,0 +1,129 @@
+<!-- Student ID - 2400965 , Student name - Harry Masters -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Horizen Travels</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='checkout.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h2>Horizen Travels</h2>
+        <button class="menu-toggle" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="navbar-links" id="navbar-links">
+            <a href="/Main"><i class="fas fa-home"></i> Home</a>
+            <a href="/Book"><i class="fas fa-plane"></i> Flight Booking</a>
+            <a href="/sbooking"><i class="fas fa-list"></i> View Bookings</a>
+            <a href="/info"><i class="fas fa-info-circle"></i> More Info</a>
+            <a href="/contacts"><i class="fas fa-address-book"></i> Contacts</a>
+            <a href="/logout"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-container">
+        <div class="content">
+            <h1><i class="fas fa-credit-card"></i> Checkout</h1>
+            <p>Please review your booking details and proceed with the payment.</p>
+
+            <!-- Booking Details -->
+            <div class="booking-details">
+                <h2><i class="fas fa-info-circle"></i> Booking Information</h2>
+                <div class="booking-card">
+                    <div class="booking-item">
+                        <span class="booking-label">Booking Name:</span>
+                        <span class="booking-value">{{ booking.booking_name }}</span>
+                    </div>
+                    <div class="booking-item">
+                        <span class="booking-label">Booking Email:</span>
+                        <span class="booking-value">{{ booking.booking_email }}</span>
+                    </div>
+                    <div class="booking-item">
+                        <span class="booking-label">Depart:</span>
+                        <span class="booking-value">{{ booking.depart }}</span>
+                    </div>
+                    <div class="booking-item">
+                        <span class="booking-label">Depart Time:</span>
+                        <span class="booking-value">{{ booking.depart_time }}</span>
+                    </div>
+                    <div class="booking-item">
+                        <span class="booking-label">Arrive:</span>
+                        <span class="booking-value">{{ booking.arrive }}</span>
+                    </div>
+                    <div class="booking-item">
+                        <span class="booking-label">Arrive Time:</span>
+                        <span class="booking-value">{{ booking.arrive_time }}</span>
+                    </div>
+                    <div class="booking-item">
+                        <span class="booking-label">Booking Date:</span>
+                        <span class="booking-value">{{ booking.booking_date.strftime('%Y-%m-%d') }}</span>
+                    </div>
+                    <div class="booking-item">
+                        <span class="booking-label">Seats Booked:</span>
+                        <span class="booking-value">{{ booking.seats_booked }}</span>
+                    </div>
+                    <div class="booking-item">
+                        <span class="booking-label">Date Booked For:</span>
+                        <span class="booking-value">{{ booking.date_booked_for.strftime('%Y-%m-%d') }}</span>
+                    </div>
+                    <div class="booking-item">
+                        <span class="booking-label">Total Costs:</span>
+                        <span class="booking-value">${{ booking.Booking_cost }}</span>
+                    </div>
+                    {% if booking.Booking_cost is defined and booking.seats_booked is defined %}
+                    {% set seat_cost = (booking.Booking_cost / booking.seats_booked) if booking.seats_booked else 0 %}
+                    {% set days_in_advance = (booking.date_booked_for - booking.booking_date).days %}
+                    {% if 80 <= days_in_advance <= 90 %}
+                        {% set discount_percent = 0.25 %}
+                    {% elif 60 <= days_in_advance <= 79 %}
+                        {% set discount_percent = 0.15 %}
+                    {% elif 45 <= days_in_advance <= 59 %}
+                        {% set discount_percent = 0.10 %}
+                    {% else %}
+                        {% set discount_percent = 0 %}
+                    {% endif %}
+                    {% if discount_percent > 0 %}
+                    <div class="booking-item" style="color:#059669;">
+                        <span class="booking-label">Discount Info:</span>
+                        <span class="booking-value">
+                            {% set original_total = seat_cost * booking.seats_booked / (1 - discount_percent) %}
+                            {% set discount = original_total - booking.Booking_cost %}
+                            You saved ${{ "%.2f"|format(discount) }} ({{ (discount_percent * 100)|int }}% off) with an early booking discount!
+                        </span>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Payment Form -->
+            <div class="payment-form">
+                <h2><i class="fas fa-money-check-alt"></i> Payment Details</h2>
+                <form action="/payment_page" method="GET">
+                    <input type="hidden" name="booking_id" value="{{ booking.booking_id }}">
+                    <button type="submit" class="pay-btn">Pay Now</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            © 2025 Horizen Travels | All Rights Reserved
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('navbar-links').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

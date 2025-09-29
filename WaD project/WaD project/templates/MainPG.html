@@ -1,0 +1,120 @@
+<!-- Student ID - 2400965 , Student name - Harry Masters -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizen Travels - Welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h2>Horizen Travels</h2>
+        <button class="menu-toggle" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="navbar-links" id="navbar-links">
+            <a href="/Main"><i class="fas fa-home"></i> Home</a>
+            <a href="/Book"><i class="fas fa-plane"></i> Flight Booking</a>
+            <a href="/sbooking"><i class="fas fa-list"></i> View Bookings</a>
+            <a href="/info"><i class="fas fa-info-circle"></i> More Info</a>
+            <a href="/contacts"><i class="fas fa-address-book"></i> Contacts</a>
+            <a href="/logout"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+            {% if is_admin %}
+            <a href="/admin"><i class="fas fa-user-shield"></i> Admin</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-container">
+        <div class="content">
+            <!-- Hero Section with Background Image -->
+            <div class="hero-section">
+                <h1 class="hero-title">Welcome, {{ name }}!</h1>
+                <p class="hero-subtitle">Your journey begins with Horizen Travels</p>
+            </div>
+            
+            <div style="display: flex; flex-wrap: wrap; align-items: center;">
+                <div class="half-page">
+                    <p>At Horizen Travels, we know every UK traveler is looking for something special. That's why we've curated a range of holiday experiences across the United Kingdom – from relaxing coastal escapes in Cornwall to vibrant city breaks in Edinburgh and scenic countryside retreats in Yorkshire.</p>
+                    <p>Our expertise covers the best of the UK, including popular destinations like the Lake District, Scottish Highlands, and the historic cities of Bath and York. Whether you're after a family adventure, a romantic getaway, or a cultural exploration, we offer flexible travel options and handpicked accommodations to suit your needs.</p>
+                    <p>As a leading provider of UK holiday experiences, we're here for you whenever you need us – through our stores, mobile app, website, or phone support. Your perfect UK getaway is just a conversation away.</p>
+                </div>
+            </div>
+
+            <!-- Popular Destinations -->
+            <h2><i class="fas fa-map-marker-alt"></i> Popular Destinations</h2>
+            <div class="destinations" style="display: flex; flex-wrap: wrap; justify-content: space-between; margin: 20px 0;">
+                <div class="destination-card" style="flex: 1; min-width: 200px; margin: 10px; background: #f0f4ff; padding: 15px; border-radius: 8px; text-align: center;">
+                    <i class="fas fa-sun" style="font-size: 2rem; color: #f59e0b;"></i>
+                    <h3>The sunny South</h3>
+                    <p>Discover golden beaches, vibrant coastal towns, and rich cultural heritage in this Cornish paradise.</p>
+                </div>
+                <div class="destination-card" style="flex: 1; min-width: 200px; margin: 10px; background: #f0f4ff; padding: 15px; border-radius: 8px; text-align: center;">
+                    <i class="fas fa-umbrella-beach" style="font-size: 2rem; color: #0ea5e9;"></i>
+                    <h3>Tropical Edinburgh</h3>
+                    <p>Experience breathtaking beaches, ancient Edinburgh , and world-class resorts along the Edinburgh.</p>
+                </div>
+                <div class="destination-card" style="flex: 1; min-width: 200px; margin: 10px; background: #f0f4ff; padding: 15px; border-radius: 8px; text-align: center;">
+                    <i class="fas fa-mountain" style="font-size: 2rem; color: #10b981;"></i>
+                    <h3>Scenic Leeds</h3>
+                    <p>Indulge in exquisite cuisine, stunning landscapes, and unparalleled historical treasures from York to Leeds.</p>
+                </div>
+            </div>
+
+
+            <!-- Reviews Section -->
+            <div class="reviews">
+                <h2><i class="fas fa-star"></i> Customer Reviews</h2>
+
+                <div class="review">
+                    <p><strong>John Doe <span style="color: #f59e0b;">⭐⭐⭐⭐⭐</span></strong></p>
+                    <p>"Our family trip to Barcelona exceeded all expectations! Horizen Travels handled everything from flights to accommodations flawlessly. The personalized itinerary suggestions made our experience truly memorable."</p>
+                </div>
+
+                <div class="review">
+                    <p><strong>Jane Smith <span style="color: #f59e0b;">⭐⭐⭐⭐</span>☆</strong></p>
+                    <p>"We had a minor issue with our hotel reservation in Rome, but the customer service team resolved it within hours. Their attention to detail and quick response turned what could have been a problem into a smooth experience. Will definitely book through Horizen again!"</p>
+                </div>
+
+                <div class="review">
+                    <p><strong>Michael Brown <span style="color: #f59e0b;">⭐⭐⭐⭐⭐</span></strong></p>
+                    <p>"As a frequent traveler, I've used many booking services, but Horizen Travels stands out for their competitive pricing and exceptional service. Their mobile app made tracking my itinerary and flight updates incredibly convenient during my trip to Mexico."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            © 2025 Horizen Travels | All Rights Reserved | <a href="#" style="color: #3B82F6; text-decoration: none;">Privacy Policy</a>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function(event) {
+            event.stopPropagation(); // Prevent the click from bubbling up
+            document.getElementById('navbar-links').classList.toggle('active');
+        });
+        
+        // Modified: Close menu when clicking anywhere else, but only on desktop
+        document.addEventListener('click', function(event) {            
+            const navbarLinks = document.getElementById('navbar-links');            
+            const menuToggle = document.getElementById('menu-toggle');            
+            const isMobile = window.matchMedia("(max-width: 768px)").matches;                        
+            // Only apply this behavior on desktop or when menu is already active on mobile            
+            if (!navbarLinks.contains(event.target) && event.target !== menuToggle) {                
+                if (!isMobile || (isMobile && navbarLinks.classList.contains('active'))) {                    
+                    navbarLinks.classList.remove('active');                
+                }            
+            }
+        });
+    </script>
+</body>
+</html>

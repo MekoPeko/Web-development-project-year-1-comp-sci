@@ -1,0 +1,217 @@
+<!-- Student ID - 2400965 , Student name - Harry Masters -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Info - Horizen Travels</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='InfoPG.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h2>Horizen Travels</h2>
+        <button class="menu-toggle" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="navbar-links" id="navbar-links">
+            <a href="/Main"><i class="fas fa-home"></i> Home</a>
+            <a href="/Book"><i class="fas fa-plane"></i> Flight Booking</a>
+            <a href="/sbooking"><i class="fas fa-list"></i> View Bookings</a>
+            <a href="/info"><i class="fas fa-info-circle"></i> More Info</a>
+            <a href="/contacts"><i class="fas fa-address-book"></i> Contacts</a>
+            {% if is_admin %}
+            <a href="/admin"><i class="fas fa-user-shield"></i> Admin Page</a>
+            {% endif %}
+            <a href="/logout"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-container">
+        <div class="content">
+            <h1><i class="fas fa-user-circle"></i> Account Information</h1>
+            <p class="subtitle">View and manage your personal account details.</p>
+            
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="flash-messages">
+                  {% for message in messages %}
+                    <p class="flash-message"><i class="fas fa-info-circle"></i> {{ message }}</p>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+            
+            <!-- Account Information Section -->
+            <div class="account-info">
+                <h2><i class="fas fa-id-card"></i> Personal Details</h2>
+                <table>
+                    <tr>
+                        <td><strong>Name:</strong></td>
+                        <td>{{ account.name }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Email:</strong></td>
+                        <td>{{ account.email }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Password:</strong></td>
+                        <td>
+                            <div class="password-field">
+                                <input type="password" value="{{ account.password }}" id="password-display" readonly>
+                                <button class="toggle-password" onclick="togglePasswordVisibility()">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- Change Password Section -->
+            <div class="password-change-section">
+                <h2><i class="fas fa-key"></i> Change Your Password</h2>
+                <form action="/change_password" method="POST" class="password-form">
+                    <div class="form-group">
+                        <label for="current-password">Current Password</label>
+                        <div class="password-input-group">
+                            <input type="password" id="current-password" name="current_password" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="new-password">New Password</label>
+                        <div class="password-input-group">
+                            <input type="password" id="new-password" name="new_password" required oninput="checkPasswordStrength()">
+                        </div>
+                        <div class="password-strength" id="password-strength"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm New Password</label>
+                        <div class="password-input-group">
+                            <input type="password" id="confirm-password" name="confirm_password" required oninput="checkPasswordMatch()">
+                        </div>
+                        <div id="password-match-message"></div>
+                    </div>
+                    
+                    <button type="submit" class="change-password-btn" id="submit-btn">
+                        <i class="fas fa-save"></i> Update Password
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Account Activity Section -->
+            <div class="account-activity">
+                <h2><i class="fas fa-history"></i> Account Security Tips</h2>
+                <ul style="list-style-type: none; padding-left: 10px; margin-top: 10px;">
+                    <li><i class="fas fa-check-circle" style="color: #10B981; margin-right: 8px;"></i> Use a strong password with at least 8 characters</li>
+                    <li><i class="fas fa-check-circle" style="color: #10B981; margin-right: 8px;"></i> Include a mix of letters, numbers, and symbols</li>
+                    <li><i class="fas fa-check-circle" style="color: #10B981; margin-right: 8px;"></i> Never share your password with others</li>
+                    <li><i class="fas fa-check-circle" style="color: #10B981; margin-right: 8px;"></i> Change your password regularly</li>
+                    <li><i class="fas fa-check-circle" style="color: #10B981; margin-right: 8px;"></i> Log out when using shared computers</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            © 2025 Horizen Travels | All Rights Reserved
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('navbar-links').classList.toggle('active');
+        });
+        
+        // Toggle password visibility
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password-display');
+            const toggleBtn = document.querySelector('.toggle-password i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.className = 'fas fa-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.className = 'fas fa-eye';
+            }
+        }
+        
+        // Check password strength
+        function checkPasswordStrength() {
+            const password = document.getElementById('new-password').value;
+            const strengthIndicator = document.getElementById('password-strength');
+            
+            if (password.length === 0) {
+                strengthIndicator.innerHTML = '';
+                return;
+            }
+            
+            let strength = 0;
+            
+            // Length check
+            if (password.length >= 8) strength += 1;
+            
+            // Lowercase letters check
+            if (password.match(/[a-z]+/)) strength += 1;
+            
+            // Uppercase letters check
+            if (password.match(/[A-Z]+/)) strength += 1;
+            
+            // Numbers check
+            if (password.match(/[0-9]+/)) strength += 1;
+            
+            // Special characters check
+            if (password.match(/[^a-zA-Z0-9]+/)) strength += 1;
+            
+            // Display strength
+            switch(strength) {
+                case 0:
+                case 1:
+                    strengthIndicator.innerHTML = '<span style="color: #EF4444;">Very Weak</span>';
+                    break;
+                case 2:
+                    strengthIndicator.innerHTML = '<span style="color: #F59E0B;">Weak</span>';
+                    break;
+                case 3:
+                    strengthIndicator.innerHTML = '<span style="color: #10B981;">Medium</span>';
+                    break;
+                case 4:
+                    strengthIndicator.innerHTML = '<span style="color: #3B82F6;">Strong</span>';
+                    break;
+                case 5:
+                    strengthIndicator.innerHTML = '<span style="color: #1E3A8A;">Very Strong</span>';
+                    break;
+            }
+        }
+        
+        // Check if passwords match
+        function checkPasswordMatch() {
+            const password = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const message = document.getElementById('password-match-message');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            if (confirmPassword.length === 0) {
+                message.innerHTML = '';
+                return;
+            }
+            
+            if (password === confirmPassword) {
+                message.innerHTML = '<span style="color: #10B981;">Passwords match</span>';
+                submitBtn.disabled = false;
+            } else {
+                message.innerHTML = '<span style="color: #EF4444;">Passwords do not match</span>';
+                submitBtn.disabled = true;
+            }
+        }
+    </script>
+</body>
+</html>

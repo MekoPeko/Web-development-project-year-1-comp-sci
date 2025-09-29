@@ -1,0 +1,521 @@
+/* Student ID - 2400965 , Student name - Harry Masters */
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body & Layout */
+body {
+    display: flex;
+    flex-direction: column; /* Changed to column to accommodate navbar */
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+    background-color: #F3F4F6; /* Light Gray Background */
+    color: #333; /* Default Dark Gray Text */
+    line-height: 1.6;
+}
+
+/* Navigation Bar Styling */
+.navbar {
+    width: 100%;
+    background-color: #1E3A8A; /* Navy Blue */
+    padding: 10px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.navbar h2 {
+    color: white;
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.navbar a {
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.navbar a:hover {
+    background-color: #3B82F6; /* Lighter Blue Hover */
+    transform: translateY(-2px);
+}
+
+/* Mobile menu button */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #1E3A8A; /* Navy Blue */
+    padding-top: 60px; /* Adjusted for navbar */
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    padding: 15px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: #3B82F6; /* Lighter Blue Hover */
+}
+
+/* Main Content Wrapper */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0; /* Removed left margin */
+    margin-top: 70px; /* Adjusted for navbar */
+    width: 100%; /* Adjusted width */
+    min-height: 100vh;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Content Area */
+.content {
+    flex: 1; /* Pushes footer to bottom */
+    padding: 20px;
+    background-color: white; /* White Content Background */
+    border-radius: 10px;
+    margin: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.content:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Paragraph Styling */
+p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+/* New class to limit paragraph width */
+.half-page {
+    width: 100%;
+    margin: 0 auto; /* Center the paragraph */
+    display: inline-block; /* Ensure it doesn't affect other elements */
+}
+
+/* Make <h1> White */
+h1 {
+    color: #1E3A8A; /* Navy Blue */
+    margin-bottom: 20px;
+    font-size: 2rem;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 3px;
+    background-color: #3B82F6;
+}
+
+h2 {
+    color: #1E3A8A; /* Navy Blue */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Adds subtle contrast */
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+/* Image container */
+.image-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    width: 100%;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.image-container img:hover {
+    transform: scale(1.02);
+}
+
+/* Reviews Section */
+.reviews {
+    margin-top: 30px;
+}
+
+.review {
+    background: white;
+    padding: 15px;
+    border-left: 5px solid #3B82F6; /* Blue Accent */
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.review:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.review p {
+    margin-bottom: 10px;
+}
+
+.review p:last-child {
+    margin-bottom: 0;
+}
+
+/* Footer (Always at Bottom) */
+.footer {
+    text-align: center;
+    padding: 15px;
+    background: #1E293B; /* Darker Blue */
+    color: white;
+    width: 100%;
+    font-size: 0.9rem;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .navbar-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .navbar-links.active {
+        display: flex;
+    }
+    
+    .navbar a {
+        width: 100%;
+        padding: 15px;
+        text-align: center;
+    }
+    
+    .menu-toggle {
+        display: block;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+    }
+    
+    .content {
+        margin: 10px;
+        padding: 15px;
+    }
+    
+    .half-page {
+        width: 100%;
+    }
+    
+    .image-container {
+        margin-left: 0;
+        margin-top: 20px;
+        justify-content: center;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .half-page {
+        width: 60%;
+    }
+    
+    .image-container {
+        width: 35%;
+    }
+    
+    .content {
+        padding: 25px;
+    }
+}
+
+@media (min-width: 1025px) {
+    .navbar a {
+        margin: 0 5px;
+    }
+    
+    .half-page {
+        width: 60%;
+    }
+    
+    .image-container {
+        width: 35%;
+    }
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../static/hero-image.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 0 20px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Destinations Section */
+.destinations {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.destination-card {
+    flex: 1;
+    min-width: 200px;
+    margin: 10px;
+    background: #f0f4ff;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.destination-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.destination-card i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.destination-card h3 {
+    color: #1E3A8A;
+    margin-bottom: 10px;
+}
+
+.destination-card p {
+    color: #555;
+    font-size: 0.9rem;
+}
+
+/* Star Ratings */
+.star-rating {
+    color: #f59e0b;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-section {
+        height: 250px;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .destinations {
+        flex-direction: column;
+    }
+    
+    .destination-card {
+        margin: 5px 0;
+    }
+}
+
+/* Contact Page Styles */
+.contact-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.contact-info {
+    flex: 1;
+    min-width: 300px;
+    background-color: #f0f4ff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.contact-form {
+    flex: 1;
+    min-width: 300px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.contact-item i {
+    color: #1E3A8A;
+    font-size: 1.5rem;
+    margin-right: 15px;
+    width: 30px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #1E3A8A;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.form-group textarea {
+    height: 150px;
+    resize: vertical;
+}
+
+.submit-btn {
+    background-color: #1E3A8A;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #3B82F6;
+    transform: translateY(-2px);
+}
+
+.map-container {
+    margin-top: 30px;
+    height: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Flash Messages */
+.flash-messages {
+    margin: 15px 0;
+}
+
+.flash-message {
+    background-color: #D1FAE5;
+    color: #065F46;
+    padding: 12px 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border-left: 4px solid #10B981;
+    animation: fadeIn 0.3s ease;
+}
+
+/* --- Moved from MainPG.html inline style --- */
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1503220317375-aaad61436b1b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+    background-size: cover;
+    background-position: center;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 0 20px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+/* --- End moved styles --- */

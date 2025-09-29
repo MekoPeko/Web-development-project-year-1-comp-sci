@@ -1,0 +1,205 @@
+<!-- Student ID - 2400965 , Student name - Harry Masters -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Bookings - Horizen Travels</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='sbooking.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h2>Horizen Travels</h2>
+        <button class="menu-toggle" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="navbar-links" id="navbar-links">
+            <a href="/Main"><i class="fas fa-home"></i> Home</a>
+            <a href="/Book"><i class="fas fa-plane"></i> Flight Booking</a>
+            <a href="/sbooking"><i class="fas fa-list"></i> View Bookings</a>
+            <a href="/info"><i class="fas fa-info-circle"></i> More Info</a>
+            <a href="/contacts"><i class="fas fa-address-book"></i> Contacts</a>
+            {% if is_admin %}
+            <a href="/admin"><i class="fas fa-user-shield"></i> Admin Page</a>
+            {% endif %}
+            <a href="/logout"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+        </div>
+    </div>
+
+    <!-- Discount Info Legend -->
+    <div class="discount-info-card">
+        <strong><i class="fas fa-percent"></i> Early Booking Discounts:</strong>
+        <div class="discount-scale">
+            <span class="discount-item">
+                80-90 days: <span style="color:#059669;font-weight:bold;">25% off</span>
+            </span>
+            <span class="discount-item">
+                60-79 days: <span style="color:#10b981;font-weight:bold;">15% off</span>
+            </span>
+            <span class="discount-item">
+                45-59 days: <span style="color:#f59e0b;font-weight:bold;">10% off</span>
+            </span>
+            <span class="discount-item">
+                &lt;45 days: <span style="color:#ef4444;font-weight:bold;">No discount</span>
+            </span>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-container">
+        <div class="content">
+            <h1><i class="fas fa-suitcase"></i> Welcome, {{ name }} - Manage Your Bookings</h1>
+            
+            <!-- Flight Information Table - Visible to all users -->
+            <div class="table-container">
+                <h2><i class="fas fa-plane"></i> Your Flight Bookings</h2>
+                
+                {% if bookings %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Seat Type</th>
+                            <th>Seats</th>
+                            <th>From</th>
+                            <th>Depart Time</th>
+                            <th>To</th>
+                            <th>Arrive Time</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Original Cost</th>
+                            <th>Total Cost (Discounted)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                        <tr>
+                            <td>{{ booking.seat_type }}</td>
+                            <td>{{ booking.seats_booked }}</td>
+                            <td>{{ booking.flight_depart }}</td>
+                            <td>{{ booking.depart_time }}</td>
+                            <td>{{ booking.flight_arrive }}</td>
+                            <td>{{ booking.arrive_time }}</td>
+                            <td>{{ booking.booking_date.strftime('%Y-%m-%d') }}</td> <!-- Format to show only the date -->
+                            <td>
+                                <span class="status-badge status-{{ booking.booking_status }}">
+                                    {% if booking.booking_status == 'pending' %}
+                                        <i class="fas fa-clock" style="margin-right:5px;"></i>
+                                    {% elif booking.booking_status == 'confirmed' %}
+                                        <i class="fas fa-check-circle" style="margin-right:5px;"></i>
+                                    {% elif booking.booking_status == 'cancelled' %}
+                                        <i class="fas fa-times-circle" style="margin-right:5px;"></i>
+                                    {% elif booking.booking_status == 'refund-pending' %}
+                                        <i class="fas fa-undo" style="margin-right:5px;"></i>
+                                    {% endif %}
+                                    {{ booking.booking_status }}
+                                </span>
+                            </td>
+                            <td>
+                                {% set days_in_advance = (booking.date_booked_for - booking.booking_date).days if booking.date_booked_for and booking.booking_date else 0 %}
+                                {% if 80 <= days_in_advance <= 90 %}
+                                    {% set discount = 0.25 %}
+                                {% elif 60 <= days_in_advance <= 79 %}
+                                    {% set discount = 0.15 %}
+                                {% elif 45 <= days_in_advance <= 59 %}
+                                    {% set discount = 0.10 %}
+                                {% else %}
+                                    {% set discount = 0.0 %}
+                                {% endif %}
+                                {# Calculate original cost with seat type multiplier #}
+                                {% set seat_cost = booking.Seat_cost %}
+                                {% if booking.seat_type == "Business class" %}
+                                    {% set seat_cost = seat_cost * 2 %}
+                                {% elif booking.seat_type == "first class" %}
+                                    {% set seat_cost = seat_cost * 3 %}
+                                {% endif %}
+                                {% set original_cost = (booking.seats_booked * seat_cost) if booking.seats_booked and seat_cost else booking.Booking_cost %}
+                                ${{ "%.2f"|format(original_cost) }}
+                            </td>
+                            <td>
+                                ${{ "%.2f"|format(booking.Booking_cost) }}
+                                {% if discount > 0 %}
+                                    <span style="color:#059669;font-size:0.95em;display:block;">({{ (discount*100)|int }}% off)</span>
+                                {% endif %}
+                            </td>
+                            <td class="button-group">
+                                {% if booking.booking_status == 'confirmed' %}
+                                    <a href="/view_receipt/{{ booking.booking_id }}" class="view-receipt-btn">
+                                        <i class="fas fa-receipt"></i> Receipt
+                                    </a>
+                                    <form action="/request_refund" method="post">
+                                        <input type="hidden" name="booking_id" value="{{ booking.booking_id }}">
+                                        <button type="submit" class="refund-btn">
+                                            <i class="fas fa-undo"></i> Request Refund
+                                        </button>
+                                    </form>
+                                {% elif booking.booking_status == 'pending' %}
+                                    <form action="/check" method="post">
+                                        <input type="hidden" name="booking_id" value="{{ booking.booking_id }}">
+                                        <button type="submit" class="checkout-btn">
+                                            <i class="fas fa-credit-card"></i> Checkout
+                                        </button>
+                                    </form>
+                                    <form action="/delete_booking" method="post">
+                                        <input type="hidden" name="booking_id" value="{{ booking.booking_id }}">
+                                        <button type="submit" class="delete-btn">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                {% elif booking.booking_status == 'refund-pending' %}
+                                    <span style="color:#4b5563;font-style:italic;padding:8px 0;">
+                                        <i class="fas fa-hourglass-half"></i> Refund in process
+                                    </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-luggage-cart"></i>
+                    <p>No bookings found.</p>
+                    <a href="/Book"><i class="fas fa-plane"></i> Book a flight now!</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            © 2025 Horizen Travels | All Rights Reserved
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('navbar-links').classList.toggle('active');
+        });
+        
+        // Add confirmation before deleting or requesting refund for bookings
+        const deleteForms = document.querySelectorAll('form[action="/delete_booking"]');
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                if (!confirm('Are you sure you want to cancel this booking?')) {
+                    event.preventDefault();
+                }
+            });
+        });
+        
+        const refundForms = document.querySelectorAll('form[action="/request_refund"]');
+        refundForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                if (!confirm('Are you sure you want to request a refund for this booking?')) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

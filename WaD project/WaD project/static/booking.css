@@ -1,0 +1,457 @@
+/* Student ID - 2400965 , Student name - Harry Masters */
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body & Layout */
+body {
+    display: flex;
+    flex-direction: column; /* Changed to column to accommodate navbar */
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+    background-color: #F3F4F6;
+    color: #333;
+}
+
+/* Navigation Bar Styling */
+.navbar {
+    width: 100%;
+    background-color: #1E3A8A; /* Navy Blue */
+    padding: 10px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.navbar h2 {
+    color: white;
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.navbar a {
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.navbar a:hover {
+    background-color: #3B82F6; /* Lighter Blue Hover */
+    transform: translateY(-2px);
+}
+
+/* Mobile menu button */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #1E3A8A;
+    padding-top: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    padding: 15px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: #3B82F6;
+}
+
+/* Main Content Wrapper */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 70px; /* Adjusted for navbar */
+    width: 100%;
+    min-height: calc(100vh - 70px);
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Content Area */
+.content {
+    flex: 1;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    margin: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.content:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Table Styling */
+.table-container {
+    margin-top: 25px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #1E3A8A;
+    color: white;
+    position: sticky;
+    top: 0;
+}
+
+table tbody tr {
+    transition: background-color 0.3s;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tbody tr:hover {
+    background-color: #f0f4ff;
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+label {
+    font-size: 1rem;
+    color: #1E3A8A;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+select, input[type="text"], input[type="number"], input[type="date"] {
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+select:hover, input[type="text"]:hover, input[type="number"]:hover, input[type="date"]:hover {
+    border-color: #3B82F6;
+}
+
+select:focus, input[type="text"]:focus, input[type="number"]:focus, input[type="date"]:focus {
+    border-color: #3B82F6;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+/* Time Input Boxes */
+input[type="text"][readonly] {
+    background-color: #e0e7ff; /* Light Blue Background */
+    color: #1E3A8A; /* Navy Blue Text */
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid #3B82F6; /* Lighter Blue Border */
+    border-radius: 5px;
+    padding: 12px;
+    margin-top: 10px;
+}
+
+/* Styled Button */
+.sign-in-btn {
+    background-color: #3B82F6;
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    align-self: center;
+}
+
+.sign-in-btn:hover {
+    background-color: #2563EB;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.sign-in-btn:active {
+    background-color: #1E40AF;
+    transform: translateY(0);
+}
+
+/* Delete Button */
+.delete-btn {
+    background-color: #DC2626;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #B91C1C;
+    transform: translateY(-2px);
+}
+
+.delete-btn:active {
+    transform: translateY(0);
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 15px;
+    background: #1E293B;
+    color: white;
+    width: 100%;
+    font-size: 0.9rem;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .navbar-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .navbar-links.active {
+        display: flex;
+    }
+    
+    .navbar a {
+        width: 100%;
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .navbar a:last-child {
+        border-bottom: none;
+    }
+    
+    .menu-toggle {
+        display: block;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+    }
+    
+    .content {
+        margin: 10px;
+        padding: 15px;
+    }
+    
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    table th, table td {
+        min-width: 120px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .content {
+        padding: 25px;
+    }
+    
+    form {
+        max-width: 700px;
+    }
+}
+
+/* Heading styles */
+h1 {
+    color: #1E3A8A;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 3px;
+    background-color: #3B82F6;
+}
+
+h2 {
+    color: #1E3A8A;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+/* --- Additional styling for enhanced visual appeal (from booking.html) --- */
+.form-group {
+    position: relative;
+    transition: all 0.3s ease;
+    margin-bottom: 25px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.form-group:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+select, input[type="number"], input[type="date"] {
+    transition: border 0.3s, box-shadow 0.3s;
+    border-width: 2px;
+}
+
+select:focus, input[type="number"]:focus, input[type="date"]:focus {
+    border-color: #4F46E5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+.booking-form {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.flight-info {
+    border-left: 4px solid #3B82F6;
+    transition: all 0.3s ease;
+}
+
+.flight-info:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.flight-info li {
+    padding: 8px 0;
+    transition: transform 0.2s;
+}
+
+.flight-info li:hover {
+    transform: translateX(5px);
+}
+
+.sign-in-btn {
+    background: linear-gradient(to right, #3B82F6, #2563EB);
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    padding: 14px 40px;
+}
+
+.sign-in-btn:hover {
+    background: linear-gradient(to right, #2563EB, #1E40AF);
+    box-shadow: 0 7px 14px rgba(37, 99, 235, 0.3);
+}
+
+/* Pill-style selector for seat type */
+.seat-type-selector {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: #e0e7ff;
+    border: 2px solid #e0e7ff;
+}
+
+.seat-type-option {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #1E3A8A;
+    font-weight: 600;
+}
+
+.seat-type-option.active {
+    background-color: #3B82F6;
+    color: white;
+}
+
+.travel-date-container {
+    position: relative;
+}
+
+.date-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #3B82F6;
+    pointer-events: none;
+}

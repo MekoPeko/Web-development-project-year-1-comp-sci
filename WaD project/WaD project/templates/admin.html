@@ -1,0 +1,96 @@
+<!-- Student ID - 2400965 , Student name - Harry Masters -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Horizen Travels</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='sbooking.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h2>Horizen Travels</h2>
+        <button class="menu-toggle" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="navbar-links" id="navbar-links">
+            <a href="/Main"><i class="fas fa-home"></i> Home</a>
+            <a href="/admin"><i class="fas fa-user-shield"></i> Admin Dashboard</a>
+            <a href="/admin/accounts"><i class="fas fa-users"></i> Accounts</a>
+            <a href="/admin/bookings"><i class="fas fa-ticket-alt"></i> Bookings</a>
+            <a href="/admin/flights"><i class="fas fa-plane"></i> Flights</a>
+            <a href="/admin/sales"><i class="fas fa-chart-line"></i> Sales</a>
+            <a href="/logout"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-container">
+        <div class="content">
+            <h1><i class="fas fa-user-shield"></i> Admin Dashboard</h1>
+            <p>Welcome to the admin dashboard, {{ name }}. Please select an option below to manage system data.</p>
+            
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="flash-messages">
+                  {% for message in messages %}
+                    <p class="flash-message">{{ message }}</p>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+
+            <!-- Admin Navigation Buttons -->
+            <div class="admin-panel">
+                <a href="/admin/accounts" class="admin-btn">
+                    <i class="fas fa-users"></i>
+                    <span>Accounts Management</span>
+                    <p>View and manage user accounts</p>
+                </a>
+                
+                <a href="/admin/flights" class="admin-btn">
+                    <i class="fas fa-plane"></i>
+                    <span>Flight Management</span>
+                    <p>Manage flight details and schedules</p>
+                </a>
+                
+                <a href="/admin/bookings" class="admin-btn">
+                    <i class="fas fa-ticket-alt"></i>
+                    <span>Booking Management</span>
+                    <p>View and manage customer bookings</p>
+                </a>
+                
+                <a href="/admin/sales" class="admin-btn">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Sales Reports</span>
+                    <p>View sales data and analytics</p>
+                </a>
+                
+                <a href="/admin/reviews" class="admin-btn">
+                    <i class="fas fa-star"></i>
+                    <span>Customer Reviews</span>
+                    <p>Manage customer feedback and reviews</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            © 2025 Horizen Travels | All Rights Reserved
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('navbar-links').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

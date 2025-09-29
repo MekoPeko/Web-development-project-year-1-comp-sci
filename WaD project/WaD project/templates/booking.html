@@ -1,0 +1,276 @@
+<!-- Student ID - 2400965 , Student name - Harry Masters -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Flight - Horizen Travels</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='booking.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h2>Horizen Travels</h2>
+        <button class="menu-toggle" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="navbar-links" id="navbar-links">
+            <a href="/Main"><i class="fas fa-home"></i> Home</a>
+            <a href="/Book"><i class="fas fa-plane"></i> Flight Booking</a>
+            <a href="/sbooking"><i class="fas fa-list"></i> View Bookings</a>
+            <a href="/info"><i class="fas fa-info-circle"></i> More Info</a>
+            <a href="/contacts"><i class="fas fa-address-book"></i> Contacts</a>
+            {% if is_admin %}
+            <a href="/admin"><i class="fas fa-user-shield"></i> Admin Page</a>
+            {% endif %}
+            <a href="/logout"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-container">
+        <div class="content">
+            <h1><i class="fas fa-plane-departure"></i> Book Your Flight, {{ name }}!</h1>
+            
+            <!-- Flight Booking Form -->
+            <div class="table-container">
+                <form method="POST" action="/select_flight" class="booking-form">
+                    <div class="form-group">
+                        <label for="depart"><i class="fas fa-plane-departure"></i> Depart from:</label>
+                        <select id="depart" name="depart" onchange="filterArriveOptions()" required>
+                            <option value="">Select Departure</option>
+                            {% for depart in unique_departures %}
+                                <option value="{{ depart }}">{{ depart }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="text" id="depart-time" placeholder="Depart Time" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="arrive"><i class="fas fa-plane-arrival"></i> Arrive to:</label>
+                        <select id="arrive" name="arrive" onchange="updateArriveTime()" required>
+                            <option value="">Select Arrival</option>
+                        </select>
+                        <input type="text" id="arrive-time" placeholder="Arrive Time" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="seats"><i class="fas fa-users"></i> Number of Seats:</label>
+                        <input type="number" id="seats" name="seats" min="1" max="10" value="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-chair"></i> Seat Type:</label>
+                        <div class="seat-type-selector">
+                            <div class="seat-type-option active" data-value="economy" onclick="selectSeatType(this, 'economy')">Economy</div>
+                            <div class="seat-type-option" data-value="Business class" onclick="selectSeatType(this, 'Business class')">Business Class</div>
+                            <div class="seat-type-option" data-value="first class" onclick="selectSeatType(this, 'first class')">First Class</div>
+                        </div>
+                        <input type="hidden" id="seat-type" name="seat_type" value="economy" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="travel-date"><i class="fas fa-calendar-alt"></i> Travel Date:</label>
+                        <div class="travel-date-container">
+                            <input type="date" id="travel-date" name="travel_date" required>
+                            <span class="date-icon"><i class="fas fa-calendar-day"></i></span>
+                        </div>
+                    </div>
+
+                    <!-- Discount Info -->
+                    <div class="form-group" style="background: #e0f7fa; border-radius: 8px; padding: 15px; margin-bottom: 20px; border-left: 5px solid #06b6d4;">
+                        <strong><i class="fas fa-percent"></i> Early Booking Discounts:</strong>
+                        <ul style="margin: 10px 0 0 22px; font-size: 0.97em; line-height: 1.6;">
+                            <li>Book 80-90 days in advance: <span style="color:#059669;font-weight:bold;">25% off</span></li>
+                            <li>Book 60-79 days in advance: <span style="color:#10b981;font-weight:bold;">15% off</span></li>
+                            <li>Book 45-59 days in advance: <span style="color:#f59e0b;font-weight:bold;">10% off</span></li>
+                            <li>Book less than 45 days in advance: <span style="color:#ef4444;font-weight:bold;">No discount</span></li>
+                        </ul>
+                        <span style="font-size:0.95em;color:#4b5563;display:block;margin-top:8px;">Discount is applied automatically based on your selected travel date.</span>
+                    </div>
+
+                    <div class="form-group" style="background: #eff6ff; border-left: 5px solid #3b82f6;">
+                        <label for="seat-cost"><i class="fas fa-dollar-sign"></i> Cost Per seat:</label>
+                        <input type="text" id="seat-cost" placeholder="Cost Per seat" readonly>
+                    </div>
+
+                    <input type="hidden" id="selected_flight" name="selected_flight">
+
+                    <button type="submit" class="sign-in-btn">
+                        <i class="fas fa-check-circle"></i> Book Now
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Flight Information -->
+            <div class="flight-info" style="margin-top: 30px; padding: 20px; background-color: #f0f4ff; border-radius: 8px;">
+                <h2><i class="fas fa-info-circle"></i> Flight Information</h2>
+                <p>All flights include:</p>
+                <ul style="list-style-type: none; padding-left: 10px; margin-top: 10px;">
+                    <li><i class="fas fa-suitcase"></i> Complimentary checked baggage</li>
+                    <li><i class="fas fa-utensils"></i> In-flight meals</li>
+                    <li><i class="fas fa-wifi"></i> Wi-Fi access (on select flights)</li>
+                    <li><i class="fas fa-wheelchair"></i> Special assistance available</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            © 2025 Horizen Travels | All Rights Reserved
+        </div>
+    </div>
+
+    <script>
+        function filterArriveOptions() {
+            var departSelect = document.getElementById("depart");
+            var arriveSelect = document.getElementById("arrive");
+            var departTimeBox = document.getElementById("depart-time");
+            var arriveTimeBox = document.getElementById("arrive-time");
+            var seatCostBox = document.getElementById("seat-cost");
+            var selectedDepart = departSelect.value;
+
+            // Clear current options and time boxes
+            arriveSelect.innerHTML = "";
+            departTimeBox.value = "";
+            arriveTimeBox.value = "";
+            seatCostBox.value = "";
+
+            // Add default option
+            var defaultOpt = document.createElement('option');
+            defaultOpt.value = "";
+            defaultOpt.innerHTML = "Select Arrival";
+            arriveSelect.appendChild(defaultOpt);
+
+            // Add filtered options
+            var options = JSON.parse('{{ flight_data | tojson | safe }}');
+            options.forEach(function(option) {
+                if (option.Depart === selectedDepart) {
+                    var opt = document.createElement('option');
+                    opt.value = option.Arrive;
+                    opt.innerHTML = option.Arrive;
+                    arriveSelect.appendChild(opt);
+                    departTimeBox.value = option.Time_depart;
+                }
+            });
+
+            console.log("Depart selected: " + selectedDepart);
+        }
+
+        function updateArriveTime() {
+            var departSelect = document.getElementById("depart"); 
+            var arriveSelect = document.getElementById("arrive");
+            var arriveTimeBox = document.getElementById("arrive-time");
+            var seatCostBox = document.getElementById("seat-cost");
+            var selectedDepart = departSelect.value;
+            var selectedArrive = arriveSelect.value;
+
+            // Update arrive time box and seat cost
+            var options = JSON.parse('{{ flight_data | tojson | safe }}');
+            options.forEach(function(option) {
+                if (option.Depart === selectedDepart && option.Arrive === selectedArrive) {
+                    arriveTimeBox.value = option.Time_arrive;
+                    // --- Update seat cost based on seat type ---
+                    updateSeatCost(option.Seat_cost);
+                    document.getElementById("selected_flight").value = option.idAir_jorneys;
+                    console.log("Selected flight ID set to: " + option.idAir_jorneys);
+                }
+            });
+
+            console.log("Arrive selected: " + selectedArrive);
+        }
+
+        function updateSeatCost(baseCost) {
+            var seatType = document.getElementById('seat-type').value;
+            var seatCostBox = document.getElementById("seat-cost");
+            var cost = parseFloat(baseCost);
+            if (seatType === "Business class") {
+                cost = cost * 2;
+            } else if (seatType === "first class") {
+                cost = cost * 3;
+            }
+            seatCostBox.value = "$" + cost.toFixed(2);
+        }
+
+        // Seat type selector functionality
+        function selectSeatType(element, value) {
+            // Remove active class from all options
+            document.querySelectorAll('.seat-type-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            // Add active class to selected option
+            element.classList.add('active');
+            
+            // Update hidden input value
+            document.getElementById('seat-type').value = value;
+
+            // Update seat cost if a flight is selected
+            var departSelect = document.getElementById("depart");
+            var arriveSelect = document.getElementById("arrive");
+            var selectedDepart = departSelect.value;
+            var selectedArrive = arriveSelect.value;
+            var options = JSON.parse('{{ flight_data | tojson | safe }}');
+            options.forEach(function(option) {
+                if (option.Depart === selectedDepart && option.Arrive === selectedArrive) {
+                    updateSeatCost(option.Seat_cost);
+                }
+            });
+        }
+
+        function setMinMaxDate() {
+            var dateInput = document.getElementById("travel-date");
+            var today = new Date();
+            var maxDate = new Date(); 
+            maxDate.setDate(today.getDate() + 90);
+
+            var todayStr = today.toISOString().split('T')[0];
+            var maxDateStr = maxDate.toISOString().split('T')[0];
+
+            dateInput.setAttribute('min', todayStr);
+            dateInput.setAttribute('max', maxDateStr);
+            dateInput.value = todayStr; // Set default to today
+        }
+
+        // Prevent booking on weekends
+        function preventWeekendBooking() {
+            var dateInput = document.getElementById("travel-date");
+            dateInput.addEventListener('change', function() {
+                var selected = new Date(this.value);
+                var day = selected.getDay();
+                if (day === 0 || day === 6) { // 0 = Sunday, 6 = Saturday
+                    alert('There is no booking on weekends. Please select a weekday.');
+                    this.value = '';
+                }
+            });
+        }
+
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('navbar-links').classList.toggle('active');
+        });
+        
+        // Add form validation
+        document.querySelector('form').addEventListener('submit', function(event) {
+            var depart = document.getElementById('depart').value;
+            var arrive = document.getElementById('arrive').value;
+            var seats = document.getElementById('seats').value;
+            var travelDate = document.getElementById('travel-date').value;
+            
+            if (!depart || !arrive || !seats || !travelDate) {
+                event.preventDefault();
+                alert('Please fill out all required fields.');
+            }
+        });
+
+        window.onload = function() {
+            setMinMaxDate();
+            preventWeekendBooking();
+        }
+    </script>
+</body>
+</html>

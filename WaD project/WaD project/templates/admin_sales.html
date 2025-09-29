@@ -1,0 +1,294 @@
+<!-- Student ID - 2400965 , Student name - Harry Masters -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Reports - Horizen Travels</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='sbooking.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h2>Horizen Travels</h2>
+        <button class="menu-toggle" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="navbar-links" id="navbar-links">
+            <a href="/Main"><i class="fas fa-home"></i> Home</a>
+            <a href="/admin"><i class="fas fa-user-shield"></i> Admin Dashboard</a>
+            <a href="/admin/accounts"><i class="fas fa-users"></i> Accounts</a>
+            <a href="/admin/bookings"><i class="fas fa-ticket-alt"></i> Bookings</a>
+            <a href="/admin/flights"><i class="fas fa-plane"></i> Flights</a>
+            <a href="/admin/sales"><i class="fas fa-chart-line"></i> Sales</a>
+            <a href="/logout"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-container">
+        <div class="content">
+            <h1><i class="fas fa-chart-line"></i> Sales Reports</h1>
+            <p>Welcome to the sales reports dashboard, {{ name }}. Review detailed business performance metrics below.</p>
+            
+            <!-- Back button -->
+            <a href="/admin" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</a>
+            
+            <!-- Revenue Overview Cards -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <i class="fas fa-dollar-sign"></i>
+                    <h3>Total Revenue</h3>
+                    <p>${{ "%.2f"|format(total_revenue) }}</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-ticket-alt"></i>
+                    <h3>Total Bookings</h3>
+                    <p>{{ total_bookings }}</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-user-check"></i>
+                    <h3>Paying Customers</h3>
+                    <p>{{ unique_customers }}</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-chart-bar"></i>
+                    <h3>Avg. Booking Value</h3>
+                    <p>${{ "%.2f"|format(avg_booking_value) }}</p>
+                </div>
+            </div>
+            
+            <!-- Monthly Sales Chart -->
+            <div class="chart-container">
+                <h2><i class="fas fa-calendar-alt"></i> Monthly Revenue ({{ current_year }})</h2>
+                <canvas id="monthlySalesChart"></canvas>
+            </div>
+            
+            <!-- Route Performance Tables -->
+            <div class="report-section">
+                <h2><i class="fas fa-route"></i> Route Performance</h2>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Route</th>
+                            <th>Total Revenue</th>
+                            <th>Cost</th>
+                            <th>Profit</th>
+                            <th>Profit Margin</th>
+                            <th>Bookings</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for route in profitable_routes %}
+                        <tr>
+                            <td>{{ route.route_name }}</td>
+                            <td>${{ "%.2f"|format(route.revenue) }}</td>
+                            <td>${{ "%.2f"|format(route.cost) }}</td>
+                            <td>${{ "%.2f"|format(route.profit) }}</td>
+                            <td>{{ "%.1f"|format(route.margin) }}%</td>
+                            <td>{{ route.bookings }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Top Customers -->
+            <div class="report-section">
+                <h2><i class="fas fa-user-tag"></i> Top Customers by Spending</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Email</th>
+                            <th>Total Spent</th>
+                            <th>Bookings</th>
+                            <th>Avg. per Booking</th>
+                            <th>Last Booking</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for customer in top_customers %}
+                        <tr>
+                            <td>{{ customer.name }}</td>
+                            <td>{{ customer.email }}</td>
+                            <td>${{ "%.2f"|format(customer.total_spent) }}</td>
+                            <td>{{ customer.booking_count }}</td>
+                            <td>${{ "%.2f"|format(customer.avg_booking) }}</td>
+                            <td>{{ customer.last_booking }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Sales By Journey Type -->
+            <div class="report-section">
+                <h2><i class="fas fa-plane-departure"></i> Sales by Journey</h2>
+                <div class="chart-container half-width">
+                    <canvas id="journeyTypePieChart"></canvas>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Departure</th>
+                            <th>Destination</th>
+                            <th>Total Sales</th>
+                            <th>Bookings</th>
+                            <th>Avg. Seat Price</th>
+                            <th>Seat Types</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for journey in journey_sales %}
+                        <tr>
+                            <td>{{ journey.depart }}</td>
+                            <td>{{ journey.arrive }}</td>
+                            <td>${{ "%.2f"|format(journey.total_sales) }}</td>
+                            <td>{{ journey.bookings }}</td>
+                            <td>${{ "%.2f"|format(journey.avg_price) }}</td>
+                            <td>{{ journey.seat_types }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Business Insights -->
+            <div class="insights-container">
+                <h2><i class="fas fa-lightbulb"></i> Business Insights</h2>
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <div class="insight-header">
+                            <i class="fas fa-star"></i>
+                            <h3>Best Performing Route</h3>
+                        </div>
+                        <p class="insight-value">{{ best_route.route_name }}</p>
+                        <p class="insight-detail">${{ "%.2f"|format(best_route.revenue) }} in revenue</p>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <div class="insight-header">
+                            <i class="fas fa-calendar-check"></i>
+                            <h3>Best Sales Month</h3>
+                        </div>
+                        <p class="insight-value">{{ best_month.name }}</p>
+                        <p class="insight-detail">${{ "%.2f"|format(best_month.revenue) }} in revenue</p>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <div class="insight-header">
+                            <i class="fas fa-user-crown"></i>
+                            <h3>Top Customer</h3>
+                        </div>
+                        <p class="insight-value">{{ top_customers[0].name if top_customers else 'N/A' }}</p>
+                        <p class="insight-detail">${{ "%.2f"|format(top_customers[0].total_spent) if top_customers else 0 }} spent</p>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <div class="insight-header">
+                            <i class="fas fa-couch"></i>
+                            <h3>Most Popular Seat Type</h3>
+                        </div>
+                        <p class="insight-value">{{ popular_seat.type }}</p>
+                        <p class="insight-detail">{{ popular_seat.count }} bookings</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            © 2025 Horizen Travels | All Rights Reserved
+        </div>
+    </div>
+    
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('navbar-links').classList.toggle('active');
+        });
+        
+        // Chart.js script for Monthly Sales Chart
+        var monthlyCtx = document.getElementById('monthlySalesChart').getContext('2d');
+        var monthlyChart = new Chart(monthlyCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    'January', 'February', 'March', 'April', 'May', 'June', 
+                    'July', 'August', 'September', 'October', 'November', 'December'
+                ],
+                datasets: [{
+                    label: 'Monthly Revenue ($)',
+                    data: {{ monthly_data|tojson }},
+                    backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                    borderColor: '#1E40AF',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Chart.js script for Journey Type Pie Chart
+        var journeyCtx = document.getElementById('journeyTypePieChart').getContext('2d');
+        var journeyChart = new Chart(journeyCtx, {
+            type: 'pie',
+            data: {
+                labels: {{ journey_labels|tojson }},
+                datasets: [{
+                    label: 'Sales by Journey',
+                    data: {{ journey_values|tojson }},
+                    backgroundColor: [
+                        'rgba(59, 130, 246, 0.7)',
+                        'rgba(16, 185, 129, 0.7)',
+                        'rgba(245, 158, 11, 0.7)',
+                        'rgba(99, 102, 241, 0.7)',
+                        'rgba(236, 72, 153, 0.7)',
+                        'rgba(249, 115, 22, 0.7)',
+                        'rgba(139, 92, 246, 0.7)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                var label = context.label || '';
+                                var value = context.raw || 0;
+                                var total = context.dataset.data.reduce((acc, data) => acc + data, 0);
+                                var percentage = Math.round((value / total) * 100);
+                                return label + ': $' + value + ' (' + percentage + '%)';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

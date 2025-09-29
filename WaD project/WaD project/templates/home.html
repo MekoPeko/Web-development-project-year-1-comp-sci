@@ -1,0 +1,159 @@
+<!-- Student ID - 2400965 , Student name - Harry Masters -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Horizen Travels</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='sbooking.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h2>Horizen Travels</h2>
+        <button class="menu-toggle" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="navbar-links" id="navbar-links">
+            <a href="/"><i class="fas fa-home"></i> Home</a>
+            <!-- Removing the destinations link from navbar -->
+            <!-- <a href="/destinations"><i class="fas fa-globe-americas"></i> Destinations</a> -->
+            <a href="/log"><i class="fas fa-sign-in-alt"></i> Login</a>
+            <a href="/register_page"><i class="fas fa-user-plus"></i> Register</a>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="content">
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <h1 class="hero-title">Discover the World with Horizen Travels</h1>
+                <p class="hero-subtitle">Find incredible deals on flights to your dream destinations</p>
+                <div class="button-container">
+                    <a href="/log" class="auth-button"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    <a href="/register_page" class="auth-button"><i class="fas fa-user-plus"></i> Register</a>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="features-section">
+                <h2 class="section-title">Why Choose Horizen Travels?</h2>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="feature-title">Find Great Deals</h3>
+                    <p>Discover affordable flights to hundreds of destinations worldwide with our easy search system and price comparison tools.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <h3 class="feature-title">Book with Ease</h3>
+                    <p>Simple and secure booking process with instant confirmations, e-tickets, and 24/7 customer support for your peace of mind.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="feature-title">Premium Experience</h3>
+                    <p>Choose from economy, business or first class for a comfortable journey tailored to your preferences and budget.</p>
+                </div>
+            </div>
+
+            <!-- Testimonials Section -->
+            <div class="testimonials-section">
+                <h2 class="section-title">What Our Customers Say</h2>
+                
+                <div class="testimonials-container">
+                    <div class="testimonial-card">
+                        <i class="fas fa-quote-left quote-icon"></i>
+                        <p class="testimonial-text">Horizen Travels made booking my international flight incredibly easy. Their interface is intuitive and I found a great deal with just a few clicks!</p>
+                        <span class="testimonial-author">- Sarah Johnson</span>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <i class="fas fa-quote-left quote-icon"></i>
+                        <p class="testimonial-text">I've been using Horizen Travels for all my business trips. Their customer service is exceptional and they always find me the best routes and prices.</p>
+                        <span class="testimonial-author">- Michael Chen</span>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <i class="fas fa-quote-left quote-icon"></i>
+                        <p class="testimonial-text">When my flight was delayed, Horizen Travels immediately notified me and helped me rebook without any extra charges. I couldn't be more grateful!</p>
+                        <span class="testimonial-author">- Emma Rodriguez</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="faq-section">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                
+                <div class="faq-item">
+                    <h3 class="faq-question"><i class="fas fa-question-circle"></i> How do I create an account?</h3>
+                    <p class="faq-answer">Creating an account is simple! Click on the "Register" button at the top of the page, fill in your details, and you're all set to start booking flights.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3 class="faq-question"><i class="fas fa-question-circle"></i> Can I change or cancel my flight?</h3>
+                    <p class="faq-answer">Yes, you can manage your bookings through your account. Changes and cancellations are subject to the airline's policies and may incur fees.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3 class="faq-question"><i class="fas fa-question-circle"></i> How do I find the best deals?</h3>
+                    <p class="faq-answer">Log into your account and use our search feature. You can filter by price, duration, and more to find the perfect flight that fits your budget and schedule.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3 class="faq-question"><i class="fas fa-question-circle"></i> Is my payment information secure?</h3>
+                    <p class="faq-answer">Absolutely! We use industry-standard encryption to protect your personal and payment information. Your security is our top priority.</p>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">About Us</h3>
+                    <p>Horizen Travels is dedicated to providing exceptional flight booking services with the best deals and customer support.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="/log"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                        <li><a href="/register_page"><i class="fas fa-user-plus"></i> Register</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-title">Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> support@horizentravels.com</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                </div>
+                
+                <div class="copyright">
+                    © 2025 Horizen Travels | All Rights Reserved
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('navbar-links').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
